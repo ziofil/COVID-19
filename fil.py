@@ -3,6 +3,29 @@ import seaborn as sns
 import numpy as np
 from matplotlib import pyplot as plt
 
+def time_plot(dataframe, countries:list, **kwargs):
+    """
+    Utility function to be used with the datasets from CSSE.
+    It automatically computes the delay between countries.
+    """
+    data = pd.DataFrame()
+    series_ref = dataframe[dataframe['Country/Region'] == countries[0]].sum().drop(['Province/State','Country/Region','Lat','Long'])
+    series_ref.index = pd.to_datetime(series_ref.index)
+    series_ref.name = countries[0]
+    data = data.append(series_ref)
+    
+    for c in countries[1:]:
+        series = dataframe[dataframe['Country/Region'] == c].sum().drop(['Province/State','Country/Region','Lat','Long'])
+        delay = np.argmin([np.sum(np.abs(np.array(series_ref[:-r]) - np.array(series[r:]))) for r in range(1, len(series_ref)-10)])+1
+        series.index = pd.to_datetime(series.index)
+        series.index -= pd.Timedelta(f'{delay} day')
+        series.name = c if delay == 0 else c + f' ({delay} days behind)'
+        data = data.append(series)
+    ax = data.transpose().plot(figsize=(10,7), marker='o', title='Time-adjusted confirmed cases', **kwargs)
+    ax.set_ylabel(dataframe.index.name)
+    return ax
+
+
 class EasyDF(pd.DataFrame):
     
     def __init__(self, df):
