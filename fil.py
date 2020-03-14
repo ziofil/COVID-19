@@ -2,6 +2,22 @@ import pandas as pd
 import seaborn as sns
 import numpy as np
 from matplotlib import pyplot as plt
+import json5 as js
+
+# LOADING DATA
+
+with open("csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv") as file:
+    confirmed = pd.read_csv(file)
+    confirmed.index.name='Confirmed Cases'
+    
+with open("csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv") as file:
+    deaths = pd.read_csv(file)
+    deaths.index.name='Deaths'
+    
+with open("csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv") as file:
+    recovered = pd.read_csv(file)
+    recovered.index.name='Recovered'
+
 
 def time_plot(dataframe, countries:list, **kwargs):
     """
@@ -66,3 +82,11 @@ class EasyDF(pd.DataFrame):
         title = col+'/'+norm if norm else col
         ax.set_title(title)
         return fig
+
+
+
+
+with open("dati-json/dpc-covid19-ita-regioni.json") as file:
+    regioni_raw = js.load(file)
+
+regioni = EasyDF(pd.DataFrame.from_dict(regioni_raw).drop(columns=['stato', 'codice_regione', 'lat', 'long']))
