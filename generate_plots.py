@@ -22,12 +22,14 @@ if __name__ == '__main__':
     regioni = EasyDF(pd.read_csv(REGIONI_URL).drop(columns=['stato', 'codice_regione', 'lat', 'long']))
 
     print('generating plots...')
-    time_plot(confirmed, ['Italy', 'Spain', 'France', 'Germany', 'United Kingdom']).figure.savefig('plots/europe1_delay.png', bbox_inches='tight')
-    time_plot(confirmed, ['Italy', 'Austria', 'Switzerland', 'Belgium', 'The Netherlands']).figure.savefig('plots/europe2_delay.png', bbox_inches='tight')
-    time_plot(confirmed, ['Italy', 'US', 'Canada']).figure.savefig('plots/it-us-ca_delay.png', bbox_inches='tight')
-    time_plot(confirmed, ['China', 'Italy']).figure.savefig('plots/zh-it_delay.png', bbox_inches='tight')
-    time_plot(deaths, ['Italy', 'Spain', 'France', 'Germany', 'US', 'Canada']).figure.savefig('plots/deaths_delay.png', bbox_inches='tight')
-    time_plot(deaths, ['China', 'Italy']).figure.savefig('plots/deaths_china-vs-italy.png', bbox_inches='tight')
+    time_plot(confirmed, ['Italy', 'Spain', 'France', 'Germany', 'United Kingdom']).figure.savefig('plots/europe1_confirmed.png', bbox_inches='tight')
+    time_plot(confirmed, ['Italy', 'Austria', 'Switzerland', 'Belgium', 'Netherlands']).figure.savefig('plots/europe2_confirmed.png', bbox_inches='tight')
+    time_plot(confirmed, ['Italy', 'US', 'Canada']).figure.savefig('plots/usca_confirmed.png', bbox_inches='tight')
+    time_plot(confirmed, ['China', 'Italy']).figure.savefig('plots/zh-it_confirmed.png', bbox_inches='tight')
+    time_plot(deaths, ['Italy', 'Spain', 'France', 'Germany', 'United Kingdom']).figure.savefig('plots/europe1_deaths.png', bbox_inches='tight')
+    time_plot(deaths, ['Italy', 'Austria', 'Switzerland', 'Belgium', 'Netherlands']).figure.savefig('plots/europe2_deaths.png', bbox_inches='tight')
+    time_plot(deaths, ['Italy', 'US', 'Canada']).figure.savefig('plots/usca_deaths.png', bbox_inches='tight')
+    time_plot(deaths, ['China', 'Italy']).figure.savefig('plots/zh-it_deaths.png', bbox_inches='tight')
 
     yesterday = date.today() - timedelta(1)
     five_most_cases = list(regioni[regioni['data']==yesterday].sort_values(by=['totale_casi']).denominazione_regione)[-5:]
