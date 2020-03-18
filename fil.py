@@ -18,6 +18,9 @@ from matplotlib import pyplot as plt
 #     recovered.index.name='Recovered'
 
 def select_country(dataframe, country, sum=True):
+    '''returns the series corresponding to the country cases (stripped of unnecessary data).
+    If sum=True it sums over all series corresponding to that country (e.g. for the US the data is by state). 
+    '''
     if sum:
         series = dataframe[dataframe['Country/Region'] == country].sum().drop(['Province/State','Country/Region','Lat','Long'])
     else:
